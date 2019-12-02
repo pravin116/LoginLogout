@@ -1,0 +1,19 @@
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">AssignmentHub</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+                <a class="nav-link" routerLink="/login" routerLinkActive="active">About us</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active" (click)="onLogout()">Logout</a>
+      </ul>
+    </div>
+  </nav>
