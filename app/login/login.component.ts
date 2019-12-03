@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../login.service';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from './models/User';
 
 @Component({
   selector: 'app-login',
@@ -10,34 +11,24 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
 
-  isloginError : boolean = false;
-  loginCredentials ={}
-  constructor( private loginService : LoginService,
-               private route : Router ) { }
+  loginDetails;
+  loginCredentials = new User();
+
+  constructor(private loginService: LoginService, private route: Router) { }
 
   ngOnInit() {
   }
 
-  // loginUser(){
-  //   console.log(this.loginCredentials);
-  //   this.loginService.loginUser(this.loginCredentials).subscribe(
-  //     res =>{ console.log(res)
-  //     localStorage.setItem('token',res.token)
-  //     this.route.navigate(['/dashboard']);
-  //     },
-  //     err => console.log(err)
-  //   )};
-
-  loginUser(userName,password){
-
-    this.loginService.userAuthentication(userName,password)
-    .subscribe((data:any)=>{
-localStorage.setItem('token',data.access_token);
-this.route.navigate(['/dashboard']);
-    },
-    (err : HttpErrorResponse)=>{
-      this.isloginError = true;
-    });
-
+  loginUser() {
+    console.log(this.loginCredentials);
+    this.loginService.loginUser(this.loginCredentials).subscribe(
+      res => {
+        this.loginDetails = res;
+        console.log(res);
+        localStorage.setItem('userData', this.loginDetails.userEmail);
+        this.route.navigate(['/dashboard']);
+      },
+      err => console.log(err)
+    );
   }
 }

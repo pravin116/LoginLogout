@@ -1,39 +1,41 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { User } from './login/models/User';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  private grant_type = 'password';
-  private _url = 'https://localhost:44315/token';
-  
-  constructor( private http : HttpClient,private route : Router) { }
+  private _url = 'https://localhost:44348/';
 
-  loginUser( user ){
-    console.log(this._url);
-    console.log(user,this.grant_type);
-    return this.http.post<any>(this._url,[user,this.grant_type]);
+  constructor(private http: HttpClient, private route: Router) { }
+
+  loginUser(loginCredentials: User): Observable<User[]> {
+    const url = `${this._url}login`;
+    return this.http.post<User[]>(url, loginCredentials);
+
   }
 
-  loggedIn(){
-    return !!localStorage.getItem('token');
+  onResetPassword(resetPassword: User): Observable<User[]> {
+    const url = `${this._url}resetPassword`;
+    return this.http.put<User[]>(url, resetPassword);
   }
 
-  getToken(){
-    return localStorage.getItem('token');
+  loggedIn() {
+    return !!localStorage.getItem('userData');
   }
 
-  onLogout(){
-    localStorage.removeItem('token');
-    this.route.navigate(['/login']); 
+  getToken() {
+    return localStorage.getItem('userData');
   }
 
-  userAuthentication(userName,password){
-    var data = "username="+userName+"&password="+password+"&grant_type=password";
-    var reqHeader = new HttpHeaders({'Content-Type':'application/x-www-urlencoded'});
-    return this.http.post(this._url+'/token',data,{headers:reqHeader});
+  onLogout(): Observable<any> {
+    const url = `${this._url}Logout`;
+    return this.http.post<any>(url, '');
   }
+
+
 }
